@@ -1,51 +1,165 @@
 /* General Container */
 .image-upload-container {
-  margin: 1rem; /* Espacio alrededor del contenedor de carga de imágenes */
+  margin: 1rem;
 }
 
 /* Upload Section */
 .upload-section {
-  padding: 1rem; /* Espacio interno del contenedor de carga */
-  margin-bottom: 1rem; /* Espacio debajo de la sección de carga */
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 /* Grid Container */
 .p-grid {
-  margin: 1rem; /* Espacio alrededor del contenedor de grid */
+  margin: 1rem;
 }
 
 /* Image Preview */
 .image-preview {
-  padding: 1rem; /* Espacio interno del contenedor de vista previa de imagen */
-  margin-bottom: 1rem; /* Espacio debajo del contenedor de vista previa */
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 /* Button Container */
 .button-container {
   display: flex;
-  justify-content: center; /* Centra los botones horizontalmente */
-  gap: 1rem; /* Espacio entre los botones */
-  margin-bottom: 1rem; /* Espacio debajo del contenedor de botones */
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 /* Processing Result */
 .processing-result {
-  padding: 1rem; /* Espacio interno del contenedor de resultados de procesamiento */
-  margin-top: 1rem; /* Espacio arriba del contenedor de resultados */
+  padding: 1rem;
+  margin-top: 1rem;
 }
 
 /* Progress Spinner */
 .p-progressSpinner {
-  margin-bottom: 1rem; /* Espacio debajo del spinner de progreso */
+  margin-bottom: 1rem;
 }
 
-/* Estilo adicional para los botones */
 .p-button {
-  margin: 0; /* Asegura que los botones no tienen margen adicional por defecto */
+  margin: 0;
 }
 
 .spinner-container {
   display: flex;
-  justify-content: center; /* Centra el spinner horizontalmente */
-  margin-bottom: 1rem; /* Espacio debajo del spinner */
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.image-container {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Image Compare */
+.image-compare-wrapper {
+  margin: 1rem 0;
+}
+
+.image-compare {
+  position: relative;
+  width: 100%;
+  max-height: 700px;
+  overflow: hidden;
+  user-select: none;
+  background: #f0f0f0;
+}
+
+.image-compare-left {
+  display: block;
+  width: 100%;
+  max-height: 700px;
+  object-fit: contain;
+  z-index: 1;
+}
+
+.image-compare-right {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 2;
+}
+
+.image-compare-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  z-index: 4;
+  opacity: 0;
+  cursor: ew-resize;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.image-compare-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 4px;
+  height: 100vh;
+  cursor: ew-resize;
+}
+
+.image-compare-slider::-moz-range-thumb {
+  width: 4px;
+  height: 100vh;
+  cursor: ew-resize;
+  border: none;
+  background: transparent;
+}
+
+.image-compare-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #fff;
+  z-index: 3;
+  pointer-events: none;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+}
+
+.image-compare-handle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+}
+
+.image-compare-handle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 7px solid #333;
+  margin-left: -4px;
+}
+
+.image-compare-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
 }

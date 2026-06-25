@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { FileUpload } from 'primeng/fileupload';
 import { ImageProcessingService, ProcessImageResponse } from './app.service';
-import { CommonModule } from '@angular/common';
 
 interface GalleriaImage {
   itemImageSrc: string;
@@ -10,25 +9,19 @@ interface GalleriaImage {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   @ViewChild('fileUpload') fileUpload!: FileUpload;
 
   images: GalleriaImage[] = [];
-  QR: any[] = [
-    {
-      itemImageSrc: '../assets/QR.png',
-      thumbnailImageSrc: '../assets/QR.png', // Si llegas a usar miniaturas
-      alt: 'QR Code',
-      title: 'QR Code'
-    }
-  ];
+
   hasUploadedImage: boolean = false;
   uploadedFile: File | null = null;
   processingResult: ProcessImageResponse | null = null;
   isProcessing: boolean = false;
   isResult: boolean = false;
+  sliderPosition: number = 50;
 
   constructor(private imageProcessingService: ImageProcessingService) {}
 
@@ -39,7 +32,7 @@ export class AppComponent {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const newImage: GalleriaImage = {
-          itemImageSrc: e.target.result
+          itemImageSrc: e.target.result,
         };
         this.images = [newImage];
         this.hasUploadedImage = true;
@@ -54,7 +47,7 @@ export class AppComponent {
     this.uploadedFile = null;
     this.processingResult = null;
     this.isProcessing = false;
-    this.isResult = false
+    this.isResult = false;
     if (this.fileUpload) {
       this.fileUpload.clear();
     }
@@ -69,16 +62,18 @@ export class AppComponent {
     this.isProcessing = true;
     this.isResult = true;
 
-    this.imageProcessingService.processImage(this.uploadedFile, scale).subscribe(
-      (response) => {
-        this.processingResult = response;
-        this.isProcessing = false;
-      },
-      (error) => {
-        console.error(`Error in process x${scale}:`, error);
-        this.isProcessing = false;
-      }
-    );
+    this.imageProcessingService
+      .processImage(this.uploadedFile, scale)
+      .subscribe(
+        (response) => {
+          this.processingResult = response;
+          this.isProcessing = false;
+        },
+        (error) => {
+          console.error(`Error in process x${scale}:`, error);
+          this.isProcessing = false;
+        },
+      );
   }
 
   getImageUrl(path: string): string {

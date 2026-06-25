@@ -68,16 +68,19 @@ def process_image(input_folder, filename, scale):
     shutil.copy(input_path, output_path)
 
 def run_python_command(scale):
-    command = f'python inference/inference_CRAFT.py --input datasets/benchmark/custom/LR/{scale} --output results/CRAFT/custom/{scale} --scale {scale[-1]} --model_path experiments/pretrained_models/CRAFT_MODEL_{scale}.pth'
+    command = f'python inference/inference_CRAFT.py --input datasets/benchmark/custom/LR/{scale} --output results/CRAFT/custom/{scale} --scale {scale[-1]} --model_path experiments/pretrained_models/CRAFT_MODEL_{scale.upper()}.pth'
     
     print("START")
 
     try:
-        result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
+        env = os.environ.copy()
+        env['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
+        result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True, env=env)
         output = result.stdout
     except subprocess.CalledProcessError as e:
         print(f"Error executing command: {e}")
-        output = str(e)
+        print(f"STDERR: {e.stderr}")
+        output = f"{e}\n{e.stderr}"
     
     print("END")
 

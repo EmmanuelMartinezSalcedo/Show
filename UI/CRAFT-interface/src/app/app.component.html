@@ -1,90 +1,117 @@
 <div class="image-upload-container"></div>
-  <div class="p-grid">
-    <div class="p-col-12">
-      <div class="upload-section p-shadow-2">
-        <h2>MejorIA de Imágenes</h2>
-        <p-fileUpload
-          #fileUpload
-          name="file"
-          accept="image/*"
-          customUpload="true"
-          maxFileSize="1000000"
-          (uploadHandler)="onUpload($event)"
-          mode="basic"
-          chooseLabel="Elegir imágen"
-        ></p-fileUpload>
-      </div>
-    </div>
-    <p-galleria
-      [value]="QR"
-      [containerStyle]="{ 'max-width': '100%', 'max-height': '400px', 'margin-bottom': '1rem' }"
-      [showItemNavigators]="false"
-      [showThumbnails]="false"
-      *ngIf="!hasUploadedImage">
-      <ng-template pTemplate="item" let-item>
-        <img [src]="item.itemImageSrc" style="width: 100%; max-height: 400px; object-fit: contain;" />
-      </ng-template>
-    </p-galleria>
-  </div>
-
-  <div class="p-grid" *ngIf="hasUploadedImage">
-    <div class="p-col-12 p-md-6">
-      <div class="image-preview p-shadow-2">
-        <h3>Imágen Original</h3>
-        <p-galleria
-          [value]="images"
-          [containerStyle]="{ 'max-width': '100%', 'max-height': '700px', 'margin-bottom': '1rem' }"
-          [showItemNavigators]="false"
-          [showThumbnails]="false">
-          <ng-template pTemplate="item" let-item>
-            <img [src]="item.itemImageSrc" style="width: 100%; max-height: 700px; object-fit: contain;" />
-          </ng-template>
-        </p-galleria>
-
-        <div class="button-container">
-          <p-button
-            label="Procesar X2"
-            icon="pi pi-cog"
-            styleClass="p-button-primary p-mr-2 p-mb-2"
-            (onClick)="onProcess('2')"
-          ></p-button>
-          <p-button
-            label="Procesar X3"
-            icon="pi pi-cog"
-            styleClass="p-button-primary p-mr-2 p-mb-2"
-            (onClick)="onProcess('3')"
-          ></p-button>
-          <p-button
-            label="Procesar X4"
-            icon="pi pi-cog"
-            styleClass="p-button-primary p-mr-2 p-mb-2"
-            (onClick)="onProcess('4')"
-          ></p-button>
-          <p-button
-            label="Cancelar"
-            icon="pi pi-times"
-            styleClass="p-button-danger p-mb-2"
-            (onClick)="onCancel()"
-          ></p-button>
-        </div>
-      </div>
-    </div>
-
-    <div class="p-col-12 p-md-6">
-      <div class="processing-result p-shadow-2">
-        <h3 *ngIf="isResult">Resultado</h3>
-        <p-progressSpinner *ngIf="isProcessing" styleClass="p-mb-2" class="spinner-container"></p-progressSpinner>
-        <p-galleria
-          *ngIf="!isProcessing && processingResult"
-          [value]="[{ itemImageSrc: getImageUrl(processingResult.resultImage) }]"
-          [containerStyle]="{ 'max-width': '100%', 'max-height': '700px', 'margin-bottom': '1rem' }"
-          [showItemNavigators]="false"
-          [showThumbnails]="false">
-          <ng-template pTemplate="item" let-item>
-            <img [src]="item.itemImageSrc" style="width: 100%; max-height: 700px; object-fit: contain;" />
-          </ng-template>
-        </p-galleria>
-      </div>
+<div class="p-grid">
+  <div class="p-col-12">
+    <div class="upload-section p-shadow-2">
+      <h2>Image Super-Resolution with AI</h2>
+      <p-fileUpload
+        #fileUpload
+        name="file"
+        accept="image/*"
+        customUpload="true"
+        maxFileSize="10000000"
+        (uploadHandler)="onUpload($event)"
+        mode="basic"
+        chooseLabel="Choose Image"
+      ></p-fileUpload>
     </div>
   </div>
+</div>
 
+<div class="image-preview p-shadow-2" *ngIf="hasUploadedImage && !isResult">
+  <h3>Original Image</h3>
+  <div class="image-container">
+    <img
+      [src]="images[0].itemImageSrc"
+      style="width: 100%; max-height: 400px; object-fit: contain"
+    />
+  </div>
+
+  <div class="button-container">
+    <p-button
+      label="Process X2"
+      icon="pi pi-cog"
+      styleClass="p-button-primary p-mr-2 p-mb-2"
+      (onClick)="onProcess('2')"
+    ></p-button>
+    <p-button
+      label="Process X3"
+      icon="pi pi-cog"
+      styleClass="p-button-primary p-mr-2 p-mb-2"
+      (onClick)="onProcess('3')"
+    ></p-button>
+    <p-button
+      label="Process X4"
+      icon="pi pi-cog"
+      styleClass="p-button-primary p-mr-2 p-mb-2"
+      (onClick)="onProcess('4')"
+    ></p-button>
+    <p-button
+      label="Cancel"
+      icon="pi pi-times"
+      styleClass="p-button-danger p-mb-2"
+      (onClick)="onCancel()"
+    ></p-button>
+  </div>
+</div>
+
+<div class="image-preview p-shadow-2" *ngIf="isResult">
+  <p-progressSpinner
+    *ngIf="isProcessing"
+    styleClass="p-mb-2"
+    class="spinner-container"
+  ></p-progressSpinner>
+
+  <div *ngIf="!isProcessing && processingResult" class="image-compare-wrapper">
+    <div class="image-compare">
+      <img class="image-compare-left" [src]="getImageUrl(processingResult.resultImage)" />
+      <img
+        class="image-compare-right"
+        [src]="images[0].itemImageSrc"
+        [style.clip-path]="'inset(0 ' + (100 - sliderPosition) + '% 0 0)'"
+      />
+      <input
+        type="range"
+        min="0"
+        max="100"
+        [(ngModel)]="sliderPosition"
+        class="image-compare-slider"
+        name="slider"
+      />
+      <div
+        class="image-compare-handle"
+        [style.left]="sliderPosition + '%'"
+      ></div>
+    </div>
+    <div class="image-compare-labels">
+      <span>Original</span>
+      <span>Result</span>
+    </div>
+  </div>
+
+  <div class="button-container" *ngIf="!isProcessing">
+    <p-button
+      label="Process X2"
+      icon="pi pi-cog"
+      styleClass="p-button-primary p-mr-2 p-mb-2"
+      (onClick)="onProcess('2')"
+    ></p-button>
+    <p-button
+      label="Process X3"
+      icon="pi pi-cog"
+      styleClass="p-button-primary p-mr-2 p-mb-2"
+      (onClick)="onProcess('3')"
+    ></p-button>
+    <p-button
+      label="Process X4"
+      icon="pi pi-cog"
+      styleClass="p-button-primary p-mr-2 p-mb-2"
+      (onClick)="onProcess('4')"
+    ></p-button>
+    <p-button
+      label="Cancel"
+      icon="pi pi-times"
+      styleClass="p-button-danger p-mb-2"
+      (onClick)="onCancel()"
+    ></p-button>
+  </div>
+</div>
