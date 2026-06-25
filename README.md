@@ -31,12 +31,18 @@ Web application for AI-powered image super-resolution using the [CRAFT-SR](https
 
 ![](Screenshots/Field.png)
 
+## Features
+
+- **AI-Powered Super-Resolution** — Upscale images using the CRAFT (Cross-Refinement Adaptive Fusion Transformer) model, delivering state-of-the-art detail reconstruction.
+- **Multiple Scale Factors** — Choose from 2×, 3×, or 4× upscaling, each backed by a dedicated pretrained model.
+- **Interactive Before/After Comparison** — Drag the slider to compare the original and super-resolved images side by side in real time.
+
 ## Installation
 
 ### 1. Clone the repository
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/EmmanuelMartinezSalcedo/Show
 cd Show
 ```
 
